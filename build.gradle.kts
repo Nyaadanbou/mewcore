@@ -75,7 +75,7 @@ dependencies {
     compileOnly(libs.itemsadder) { isTransitive = false }
     compileOnly(libs.mythiclib) { isTransitive = false }
     compileOnly(libs.mmoitems) { isTransitive = false }
-    compileOnly(libs.interactivebooks) { isTransitive = false }
+    compileOnly(project(":ibooks")) { isTransitive = false }
     compileOnly(libs.brewery) { isTransitive = false }
     compileOnly(libs.papi) { isTransitive = false }
     compileOnly(libs.minipapi) { isTransitive = false }
