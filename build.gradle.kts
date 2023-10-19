@@ -1,14 +1,16 @@
+import net.minecrell.pluginyml.paper.PaperPluginDescription
+
 plugins {
     id("cc.mewcraft.repo-conventions")
     id("cc.mewcraft.java-conventions")
     id("cc.mewcraft.deploy-conventions")
     id("cc.mewcraft.publishing-conventions")
-    id("cc.mewcraft.paper-plugins")
+    alias(libs.plugins.pluginyml.paper)
 }
 
 project.ext.set("name", "MewCore")
 
-group = "cc.mewcraft"
+group = "cc.mewcraft.mewcore"
 version = "5.17.4"
 description = "Common code of all Mewcraft plugins."
 
@@ -23,64 +25,40 @@ dependencies {
     // Dependencies at [compile path]
     // These dependencies are essential for plugin development,
     // so we just expose them to the consumers at compile path.
-    compileOnlyApi(libs.guice)
-    compileOnlyApi(libs.lang.bukkit)
-    compileOnlyApi(libs.bundles.cmds.paper) {
-        exclude("net.kyori")
-    }
+    // REMOVED
 
     // Dependencies at [runtime path]
     // These dependencies will be shaded in the final jar.
     // Consumers are expected to declare these dependencies
     // at [compile path] if they need these dependencies.
-
-    // Dependency injection
-    runtimeOnly(libs.guice)
-    // i18n
-    runtimeOnly(libs.lang.bukkit)
-    // Commands
-    runtimeOnly(libs.bundles.cmds.paper)
-    // Database
-    runtimeOnly(libs.hikari)
-    // GUIs
-    runtimeOnly(libs.anvilgui)
-    // Configuration
-    runtimeOnly(libs.configurate)
-    runtimeOnly(libs.simplixstorage)
-    // Utilities
-    runtimeOnly(libs.commons.io)
-    runtimeOnly(libs.cronutils)
-    runtimeOnly(libs.authlib) {
-        exclude("com.google.guava")
-        exclude("com.google.code.gson")
-        exclude("com.google.code.findbugs")
-        exclude("org.apache.logging.log4j")
-    }
-
-    // Libs embedded by core (itself)
-    compileOnly(libs.authlib)
-    compileOnly(libs.configurate)
-
-    // Plugin libs - these will be present as other plugins
-    compileOnly(libs.helper)
+    // REMOVED
 
     // The Minecraft server API
     compileOnly(libs.server.paper)
 
-    // Other random plugins that we may interact with
-    compileOnly(libs.luckperms)
-    compileOnly(libs.vault) { isTransitive = false }
-    compileOnly(libs.essentials) { isTransitive = false }
-    compileOnly(libs.towny) { isTransitive = false }
-    compileOnly(libs.itemsadder) { isTransitive = false }
-    compileOnly(libs.mythiclib) { isTransitive = false }
-    compileOnly(libs.mmoitems) { isTransitive = false }
-    compileOnly(project(":ibooks")) { isTransitive = false }
-    compileOnly(libs.brewery) { isTransitive = false }
-    compileOnly(libs.papi) { isTransitive = false }
-    compileOnly(libs.minipapi) { isTransitive = false }
+    // Plugin libs - these will present as other plugins
+    compileOnly(libs.helper)
 
-    testImplementation(libs.junit)
+    // Libs to be shaded
+    implementation(libs.configurate)
+
+    // Testing dependencies
+    testImplementation(libs.junit4)
     testImplementation(libs.helper)
     testImplementation(libs.server.paper)
+}
+
+paper {
+    main = "cc.mewcraft.mewcore.MewCorePlugin"
+    name = project.ext.get("name") as String
+    version = "${project.version}"
+    description = project.description
+    apiVersion = "1.19"
+    author = "Nailm"
+    serverDependencies {
+        register("helper") {
+            required = true
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+    }
 }
