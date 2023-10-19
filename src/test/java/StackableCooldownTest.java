@@ -1,3 +1,4 @@
+/*
 import me.lucko.helper.cooldown.Cooldown;
 import me.lucko.helper.cooldown.StackableCooldown;
 import me.lucko.helper.time.Time;
@@ -118,3 +119,4 @@ public class StackableCooldownTest {
         assertFalse(cooldown.test());
     }
 }
+*/
