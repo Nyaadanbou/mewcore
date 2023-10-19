@@ -1,6 +1,5 @@
 package cc.mewcraft.mewcore.skull;
 
-import com.google.common.base.Preconditions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import me.lucko.helper.Events;
@@ -12,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
  */
 public enum SkullCache implements Terminable {
 
-    // singleton
     INSTANCE;
 
     // the skull cache
@@ -72,11 +71,9 @@ public enum SkullCache implements Terminable {
 
         if (cache.getIfPresent(uuid) != null) {
             // if cached, updates the skull's texture
-
             mutateProfile(item, uuid);
         } else {
             // schedules a task to fetch the skull texture
-
             fetch(item, uuid);
         }
     }
@@ -124,11 +121,11 @@ public enum SkullCache implements Terminable {
      * @param uuid   the player's UUID
      */
     private void mutateProfile(ItemStack origin, UUID uuid) {
-        final ItemStack nullable = cache.getIfPresent(uuid);
-        Preconditions.checkNotNull(nullable); // this should never be null otherwise it's a fatal error
+        // This should never be null otherwise it's a fatal error!
+        final ItemStack nonNull = Objects.requireNonNull(cache.getIfPresent(uuid));
 
         SkullMeta originSkullMeta = (SkullMeta) origin.getItemMeta();
-        SkullMeta cachedSkullMeta = (SkullMeta) nullable.getItemMeta();
+        SkullMeta cachedSkullMeta = (SkullMeta) nonNull.getItemMeta();
 
         // only set the player profile to avoid unexpected duplicated lore
         originSkullMeta.setPlayerProfile(cachedSkullMeta.getPlayerProfile());
