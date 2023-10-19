@@ -9,9 +9,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.Optional;
 
-public final class UtilInventory {
+public final class EquipmentFinder {
 
-    private UtilInventory() {
+    private EquipmentFinder() {
         throw new UnsupportedOperationException();
     }
 
@@ -26,7 +26,7 @@ public final class UtilInventory {
      *
      * @return the item stack in the specific slot, or the fallback if there is no item in the specific slot
      */
-    public static @Nullable ItemStack getItemInSlot(@NotNull PlayerInventory inv, @NotNull String slot, @Nullable ItemStack fallback) {
+    public static @Nullable ItemStack getItemAtSlot(@NotNull PlayerInventory inv, @NotNull String slot, @Nullable ItemStack fallback) {
         try {
             EquipmentSlot parsed = EquipmentSlot.valueOf(slot.toUpperCase(Locale.ROOT));
             ItemStack itemInSlot = switch (parsed) {
