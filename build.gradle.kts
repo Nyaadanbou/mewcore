@@ -40,7 +40,7 @@ dependencies {
     compileOnly(libs.helper)
 
     // Libs to be shaded
-    implementation(libs.configurate)
+    implementation(libs.configurate.yaml)
 
     // Testing dependencies
     testImplementation(libs.junit4)
